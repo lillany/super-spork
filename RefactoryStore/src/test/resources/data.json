@@ -1,0 +1,44 @@
+[
+  {
+    "_id": "595de22f27286919c1da1a63",
+    "index": 0,
+    "guid": "ae0a0199-35e2-4679-9993-ebfee375b03c",
+    "isAvailable": false,
+    "priceValue": "$23.43",
+    "picture": "http://placehold.it/32x32",
+    "score": 8,
+    "author": "Martina Reeves",
+    "gender": "female",
+    "publisher": "DIGIFAD",
+    "description": "Sit est minim anim voluptate exercitation aute irure nostrud. Quis cillum ullamco consequat ad ut quis sint occaecat deserunt proident mollit veniam proident. Cillum officia aliqua voluptate aute dolore qui dolor ad sit labore aliqua. In elit irure enim proident reprehenderit commodo excepteur eiusmod qui id pariatur. Voluptate ad anim magna Lorem consectetur ea mollit veniam velit minim deserunt laboris velit. Esse incididunt mollit in consequat voluptate nulla in anim officia eu esse. Anim sint nisi sunt dolor ex ipsum elit deserunt cillum nostrud veniam exercitation deserunt fugiat.\r\n",
+    "firstPublished": 1981,
+    "dateCreated": "2016-12-18 09:29:39",
+    "genre": "travel",
+    "tags": [
+      "comedy",
+      "bestseller",
+      "art"
+    ]
+  },
+  {
+    "_id": "595de22facfb5f4f719f649d",
+    "index": 1,
+    "guid": "740060d3-35ba-4f00-bead-fb9068acf880",
+    "isAvailable": false,
+    "priceValue": "$16.27",
+    "picture": "http://placehold.it/32x32",
+    "score": 6,
+    "author": "Logan Fry",
+    "gender": "male",
+    "publisher": "NETROPIC",
+    "description": "Est velit proident cupidatat commodo aliqua. Ad est pariatur enim occaecat minim ut deserunt. Nulla nostrud eu commodo laborum aliqua aliqua adipisicing. Tempor laboris do veniam ea ipsum ipsum veniam dolore deserunt anim Lorem ex.\r\n",
+    "firstPublished": 1993,
+    "dateCreated": "2014-05-19 04:19:17",
+    "genre": "travel",
+    "tags": [
+      "children book",
+      "comedy",
+      "true story"
+    ]
+  }
+]
