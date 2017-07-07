@@ -12,7 +12,7 @@ public class GalleryViewTest{
         String path = this.getClass().getClassLoader().getResource("data.json").getPath();
         DataStorage storage = new DataStorage(path);
         GalleryView galleryView = new GalleryView();
-        String result = galleryView.getView(null, "Martina Reeves", null, null);
+        String result = galleryView.getView(null, "Martina Reeves", null, null, null);
         System.out.println("****************************");
         System.out.println(result);
     }

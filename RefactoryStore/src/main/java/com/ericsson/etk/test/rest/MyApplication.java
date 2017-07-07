@@ -12,7 +12,7 @@ public class MyApplication extends Application {
     /**
      * Override for method in order to add servlet classes
      *
-     * @return set vith all servlet classes
+     * @return set with all servlet classes
      */
     @Override
     public Set<Class<?>> getClasses() {

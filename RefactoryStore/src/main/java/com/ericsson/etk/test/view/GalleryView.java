@@ -4,7 +4,7 @@ import com.ericsson.etk.test.log.LogService;
 import com.ericsson.etk.test.storage.DataStorage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import data.Book;
+import com.ericsson.etk.test.domain.Book;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,16 +22,27 @@ public class GalleryView {
 
     }
 
-    public String getView(String year, String author, String minScore, String price) {
+    public String getView(String year, String author, String minScore, String price, String orderBy) {
 
         Book[] books = dataStorage.getData();
         List<Book> returnBooks = new ArrayList<>();
-        logService.debug("GALERY", "get View");
+        logService.debug("GALLERY", "get View");
+
+        int order = 0; //index
+        if(orderBy==null){
+            order =0;
+        }else if (orderBy.equals("author")) {
+            order = 1;
+        } else if (orderBy.equals("Title")) {
+            order = 2;
+        }
+
 
         if (year == null && author == null && minScore == null && price == null) {
-            logService.debug("GALERY", "returning all");
+            logService.debug("GALLERY", "returning all");
 
             returnBooks = Arrays.asList(books);
+
         } else {
 
             for (int i = 0; i < books.length; i++) {
@@ -39,16 +50,10 @@ public class GalleryView {
                 int b_year = books[i].getFirstPublished();
                 String b_author = books[i].getAuthor();
                 double b_price = books[i].getPrice();
-                logService.debug("GALERY", "checking:\n\r" +
-                        "year=" + year + " == " + b_year + "\r\n" +
-                        "year=" + author + " == " + b_author + "\r\n" +
-                        "year=" + minScore + " == " + b_minScore + "\r\n" +
-                        "year=" + price + " == " + b_price + "\r\n"
-                );
 
                 if ((year == null || year.equals(b_year)) && (minScore == null || minScore.equals(b_minScore))
                         && (author == null || author.equals(b_author)) && (price == null || price.equals(b_price))) {
-                    logService.debug("GALERY", "in condition");
+                    logService.debug("GALLERY", "in condition");
 
                     returnBooks.add(books[i]);
                 }
