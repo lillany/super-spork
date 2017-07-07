@@ -4,7 +4,7 @@ import com.ericsson.etk.test.log.LogService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-import data.Book;
+import com.ericsson.etk.test.domain.Book;
 
 import java.io.FileReader;
 import java.io.IOException;

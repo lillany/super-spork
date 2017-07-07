@@ -1,7 +1,7 @@
 package com.ericsson.etk.test.storage;
 
 import com.google.gson.Gson;
-import data.Book;
+import com.ericsson.etk.test.domain.Book;
 import org.junit.Test;
 
 /**
