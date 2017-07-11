@@ -5,5 +5,5 @@ package com.ericsson.etk.test.exception;
  */
 public class UserDoesNotExistException extends Throwable {
 
-
+// needs some body :D
 }

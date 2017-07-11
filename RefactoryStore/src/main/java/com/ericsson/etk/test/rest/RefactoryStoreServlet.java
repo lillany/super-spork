@@ -2,17 +2,22 @@ package com.ericsson.etk.test.rest;
 
 import com.ericsson.etk.test.auth.AuthenticationService;
 import com.ericsson.etk.test.domain.Book;
+import com.ericsson.etk.test.domain.User;
 import com.ericsson.etk.test.exception.UnsupportedAuthenticationMethod;
 import com.ericsson.etk.test.exception.UserDoesNotExistException;
-import com.ericsson.etk.test.storage.DataStorage;
-import com.ericsson.etk.test.store.Basket;
 import com.ericsson.etk.test.log.LogService;
+import com.ericsson.etk.test.storage.BasketStorage;
+import com.ericsson.etk.test.storage.DataStorage;
+import com.ericsson.etk.test.storage.UserStorage;
+import com.ericsson.etk.test.store.Basket;
 import com.ericsson.etk.test.view.GalleryView;
 import com.ericsson.etk.test.view.ObjectView;
+import com.google.gson.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 
 @Path("/store")
@@ -59,6 +64,19 @@ public class RefactoryStoreServlet {
 
         String view = new GalleryView().getView(year, author, minScore, price, orderby);
 
+        JsonParser parser = new JsonParser();
+        JsonArray jsonArray = parser.parse(view).getAsJsonArray();
+        if (jsonArray.isJsonArray()) {
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonElement x = jsonArray.get(i);
+                JsonObject asJsonObject = x.getAsJsonObject();
+                GenreColors genre = GenreColors.getByGenreString(asJsonObject.get("genre").getAsString());
+                asJsonObject.addProperty("color", genre.getColor());
+                jsonArray.set(i, asJsonObject);
+            }
+        }
+
+        view = new GsonBuilder().setPrettyPrinting().create().toJson(jsonArray);
 
         logService.debug("SERVLET", "Response ------------------------------");
         logService.debug("SERVLET", view);
@@ -67,7 +85,6 @@ public class RefactoryStoreServlet {
 
 
     }
-
 
 
     @GET
@@ -90,7 +107,29 @@ public class RefactoryStoreServlet {
         logService.debug("SERVLET", "---------------------------------------");
 
 
-        return Response.ok().type(MediaType.APPLICATION_JSON).entity(new ObjectView().getView(objectId)).build();
+        String view = new ObjectView().getView(objectId);
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject = parser.parse(view).getAsJsonObject();
+        if (jsonObject.isJsonObject()) {
+            JsonElement author1 = jsonObject.get("author");
+            String author = author1.getAsString();
+            GalleryView galleryView = new GalleryView();
+            List<Book> otherBooks = galleryView.getBooks(null, author, null, null, null);
+            JsonArray array = new JsonArray();
+            for (Book b : otherBooks) {
+                if (objectId != null && objectId.equals(b.getGuid()))
+                    continue;
+                array.add(new GsonBuilder().setPrettyPrinting().create().toJson(b));
+            }
+            jsonObject.add("otherBooksByAuthor", array);
+
+        }
+
+
+        view = new GsonBuilder().setPrettyPrinting().create().toJson(jsonObject);
+
+
+        return Response.ok().type(MediaType.APPLICATION_JSON).entity(view).build();
 
     }
 
@@ -110,9 +149,16 @@ public class RefactoryStoreServlet {
         logService.debug("SERVLET", "Processing request for /add " + objectId);
         logService.debug("SERVLET", "---------------------------------------");
 
-        Basket basket = new Basket();
-        DataStorage storage = new DataStorage(this.getClass().getClassLoader().getResource("data.json").getPath());
+        BasketStorage basketStorage = new BasketStorage();
+        //get user from session, not just Mark
+        User user = new UserStorage().getUserByUsername("Mark");
 
+        Basket basket = basketStorage.getBasketFromStorage(user.getGuid());
+        if (basket == null) {
+            basket = new Basket();
+        }
+
+        DataStorage storage = new DataStorage(this.getClass().getClassLoader().getResource("data.json").getPath());
 
         Book[] books = storage.getData();
         boolean found = false;
@@ -133,9 +179,61 @@ public class RefactoryStoreServlet {
             }
         }
 //"status":"ACKNOWLEDGED"
+        basketStorage.putBasketToStorage(user.getGuid(), basket);
         return Response.ok().type(MediaType.APPLICATION_JSON).entity("{\"status\":\"ACKNOWLEDGED\"}").build();
 
     }
 
+
+    @GET
+    @Path("/buy")
+    public Response buyBasket(@HeaderParam("authorization") String authentication) {
+        try {
+            authenticationService.authenticate(authentication);
+        } catch (UserDoesNotExistException e) {
+            return Response.ok().type(MediaType.APPLICATION_JSON).entity("{\"status\":\"USER_NOT_FOUND\"}").build();
+        } catch (UnsupportedAuthenticationMethod unsupportedAuthenticationMethod) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+        logService.debug("SERVLET", "Request -------------------------------");
+        logService.debug("SERVLET", "Processing request for /buy ");
+        logService.debug("SERVLET", "---------------------------------------");
+
+        BasketStorage basketStorage = new BasketStorage();
+        //get user from session, not just Mark
+        User user = new UserStorage().getUserByUsername("Mark");
+
+        Basket basket = basketStorage.getBasketFromStorage(user.getGuid());
+        if (basket == null) {
+            basket = new Basket();
+        }
+
+        List<Book> books = basket.getBooks();
+
+        ObjectView objectView = new ObjectView();
+        Double price = 0D;
+        for (Book local_book : books) {
+            //check is available
+            Book book = objectView.getBook(local_book.getGuid());
+            if (!book.isAvailable()) {
+                return Response.ok().type(MediaType.APPLICATION_JSON).entity("{\"status\": \"NOT_AVAILABLE\"}").build();
+            }
+
+            price += book.getPrice();
+
+        }
+
+        if(user.getBalance()<price) {
+            return Response.ok().type(MediaType.APPLICATION_JSON).entity("{\"status\": \"INSUFFICIENT_FUNDS\"}").build();
+        }
+
+
+
+//"status":"ACKNOWLEDGED"
+        basketStorage.removeBasketFromStorage(user.getGuid());
+        return Response.ok().type(MediaType.APPLICATION_JSON).entity("{\"status\":\"ACKNOWLEDGED\"}").build();
+
+    }
 
 }

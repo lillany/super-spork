@@ -1,33 +1,32 @@
 package com.ericsson.etk.test.auth;
 
+import com.ericsson.etk.test.domain.User;
 import com.ericsson.etk.test.exception.UnsupportedAuthenticationMethod;
 import com.ericsson.etk.test.exception.UserDoesNotExistException;
 import com.ericsson.etk.test.log.LogService;
+import com.ericsson.etk.test.storage.UserStorage;
 import com.sun.jersey.core.util.Base64;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by eadrdam on 06.07.17..
  */
 public class AuthenticationService {
 
+    private final UserStorage userStorage;
     private LogService logService = new LogService();
-    private Map<String, String> authInfo = new HashMap();
+
 
     public AuthenticationService() {
-        authInfo.put("John", "password");
-        authInfo.put("Luke", "password");
-        authInfo.put("Mark", "password");
-        authInfo.put("Matthew", "password");
+        userStorage = new UserStorage();
     }
 
     public void authenicate(String username, String password) throws UserDoesNotExistException {
 
-        if (!authInfo.containsKey(username))
+        User userByUsername = userStorage.getUserByUsername(username);
+        if (null == userByUsername)
             throw new UserDoesNotExistException();
-        if (!authInfo.get(username).equals(password))
+
+        if(!userByUsername.getPassword().equals(password))
             throw new UserDoesNotExistException();
     }
 

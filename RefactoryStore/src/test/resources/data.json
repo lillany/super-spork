@@ -22,6 +22,28 @@
     ]
   },
   {
+    "_id": "595e35f049a101124ebdda4f",
+    "index": 58,
+    "guid": "0c96943a-9164-4937-a74a-a7724f47740b",
+    "title": "minim dolor",
+    "isAvailable": false,
+    "priceValue": "$7.01",
+    "picture": "http://placehold.it/32x32",
+    "score": 5,
+    "author": "Atkinson Bonner",
+    "gender": "male",
+    "publisher": "ORBIN",
+    "description": "Officia laboris ullamco in id dolor fugiat excepteur excepteur aute qui consequat. Est esse officia qui excepteur culpa anim aliqua. Id reprehenderit do eu consectetur reprehenderit Lorem voluptate laborum ad do duis officia. Sunt aliqua cillum id culpa consectetur sit in reprehenderit minim nulla non aliquip. Cupidatat laboris cillum cupidatat mollit aliquip nulla officia labore. Excepteur duis qui occaecat duis irure. Proident labore aliqua tempor pariatur occaecat consequat aute Lorem qui occaecat eiusmod pariatur.\r\n",
+    "firstPublished": 2016,
+    "dateCreated": "2015-05-09 07:30:16",
+    "genre": "fantasy",
+    "tags": [
+      "animals",
+      "biography",
+      "biography"
+    ]
+  },
+  {
     "_id": "595e35f01154de165b28b19a",
     "index": 59,
     "guid": "1f2b7bc3-f6b2-4684-8f43-5f218225c9f2",

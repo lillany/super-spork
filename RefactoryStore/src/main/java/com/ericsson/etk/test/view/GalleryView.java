@@ -22,8 +22,22 @@ public class GalleryView {
 
     }
 
+
+
+
     public String getView(String year, String author, String minScore, String price, String orderBy) {
 
+        List<Book> returnBooks = getBooks(year, author, minScore, price, orderBy);
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+
+        return gson.toJson(returnBooks);
+
+
+    }
+
+    public List<Book> getBooks(String year, String author, String minScore, String price, String orderBy) {
         Book[] books = dataStorage.getData();
         List<Book> returnBooks = new ArrayList<>();
         logService.debug("GALLERY", "get View");
@@ -59,12 +73,6 @@ public class GalleryView {
                 }
             }
         }
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-
-        return gson.toJson(returnBooks);
-
-
+        return returnBooks;
     }
 }

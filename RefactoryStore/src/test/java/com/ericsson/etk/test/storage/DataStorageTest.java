@@ -15,7 +15,7 @@ public class DataStorageTest {
 
         String path = this.getClass().getClassLoader().getResource("data.json").getPath();
         DataStorage storage = new DataStorage(path);
-        Book[] books = storage.readData(path);
+        Book[] books = storage.getData(path);
         Gson gson = new Gson();
         System.out.println(gson.toJson(books));
 
