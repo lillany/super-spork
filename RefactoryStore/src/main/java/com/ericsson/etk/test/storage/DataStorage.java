@@ -24,14 +24,14 @@ public class DataStorage {
     }
 
     public Book[] getData() {
-        return readData(storagePath);
+        return getData(storagePath);
     }
 
     public String getStoragePath() {
         return storagePath;
     }
 
-    protected Book[] readData(String pathname) {
+    protected Book[] getData(String pathname) {
         Book[] books = null;
         try {
 

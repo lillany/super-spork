@@ -14,10 +14,10 @@ public class UserStorage {
 
     public UserStorage() {
         users = new ArrayList<>(4);
-        users.add(new User("1","1-a","John",65.78D,new Basket()));
-        users.add(new User("2","2-a","Matthew",65.78D,new Basket()));
-        users.add(new User("3","3-a","Mark",65.78D,new Basket()));
-        users.add(new User("4","4-a","Luke",65.78D,new Basket()));
+        users.add(new User("1","1-a","John",65.78D,new Basket(),"password"));
+        users.add(new User("2","2-a","Matthew",65.78D,new Basket(),"password"));
+        users.add(new User("3","3-a","Mark",65.78D,new Basket(),"password"));
+        users.add(new User("4","4-a","Luke",65.78D,new Basket(),"password"));
     }
 
     public UserStorage(List<User> users) {
@@ -26,5 +26,13 @@ public class UserStorage {
 
     public List<User> getUsers() {
         return users;
+    }
+
+    public User getUserByUsername(String username) {
+        for (User u : users){
+            if (u.getUsername().equals(username))
+                return u;
+        }
+        return null;
     }
 }

@@ -16,15 +16,26 @@ public class ObjectView {
 
     public String getView(String objectId) {
 
-        Book[] books = dataStorage.getData();
+
+        Book b =
+                getBook(objectId);
+        if (b == null) {
+            return "{}";
+        }
+        logService.debug("OBJECT VIEW", b.toString());
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        return gson.toJson(b);
+    }
+
+    public Book getBook(String objectId) {
+        Book[] books = dataStorage.getData();
+        Book b = null;
         for (int i = 0; i < books.length; i++) {
             if (objectId != null && books[i].getGuid().equals(objectId)) {
-                String returnObject = gson.toJson(books[i]);
-                logService.debug("OBJECT VIEW", returnObject);
-                return returnObject;
+                b = books[i];
+                break;
             }
         }
-        return "{}";
+        return b;
     }
 }

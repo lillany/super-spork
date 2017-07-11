@@ -3,6 +3,7 @@ package com.ericsson.etk.test.domain;
 import com.google.gson.annotations.SerializedName;
 
 import java.security.Timestamp;
+import java.util.Arrays;
 
 /**
  * Created by eadrdam on 06.07.17..
@@ -213,5 +214,27 @@ public class Book {
 
     public void setTags(String[] tags) {
         this.tags = tags;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id='" + id + '\'' +
+                ", guid='" + guid + '\'' +
+                ", index=" + index +
+                ", isAvailable=" + isAvailable +
+                ", price=" + price +
+                ", picture='" + picture + '\'' +
+                ", score=" + score +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", gender='" + gender + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", description='" + description + '\'' +
+                ", firstPublished=" + firstPublished +
+                ", dateCreated='" + dateCreated + '\'' +
+                ", genre='" + genre + '\'' +
+                ", tags=" + Arrays.toString(tags) +
+                '}';
     }
 }
